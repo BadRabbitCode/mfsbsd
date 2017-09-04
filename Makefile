@@ -78,7 +78,8 @@ BOOTMODULES=acpi ahci
 MFSMODULES=aesni crypto cryptodev ext2fs geom_eli geom_mirror geom_nop ipmi \
 	ntfs nullfs opensolaris smbus snp tmpfs zfs
 #
-XZ_FLAGS=
+TAR_FLAGS="--options xz:compression-level=0"
+XZ_FLAGS=-0
 #
 
 .if defined(V)
@@ -427,7 +428,7 @@ compress-usr: install prune config genkeys customfiles boot packages ${WRKDIR}/.
 ${WRKDIR}/.compress-usr_done:
 .if !defined(ROOTHACK)
 	@echo -n "Compressing usr ..."
-	${_v}${TAR} -c -J -C ${_DESTDIR} -f ${_DESTDIR}/.usr.tar.xz usr 
+	${_v}${TAR} -c -J ${TAR_FLAGS} -C ${_DESTDIR} -f ${_DESTDIR}/.usr.tar.xz usr 
 	${_v}${RM} -rf ${_DESTDIR}/usr && ${MKDIR} ${_DESTDIR}/usr 
 .else
 	@echo -n "Compressing root ..."
@@ -505,8 +506,8 @@ ${WRKDIR}/.mfsroot_done:
 	${_v}${MKDIR} ${WRKDIR}/mnt
 	${_v}${MAKEFS} -t ffs -m ${MFSROOT_MAXSIZE} -f ${MFSROOT_FREE_INODES} -b ${MFSROOT_FREE_BLOCKS} ${WRKDIR}/disk/mfsroot ${_ROOTDIR} > /dev/null
 	${_v}${RM} -rf ${WRKDIR}/mnt
-	${_v}${GZIP} -9 -f ${WRKDIR}/disk/mfsroot
-	${_v}${GZIP} -9 -f ${WRKDIR}/disk/boot/kernel/kernel
+	${_v}${GZIP} -1 -f ${WRKDIR}/disk/mfsroot
+	${_v}${GZIP} -1 -f ${WRKDIR}/disk/boot/kernel/kernel
 	${_v}if [ -f "${CFGDIR}/loader.conf" ]; then \
 		${INSTALL} -m 0644 ${CFGDIR}/loader.conf ${WRKDIR}/disk/boot/loader.conf; \
 	else \
