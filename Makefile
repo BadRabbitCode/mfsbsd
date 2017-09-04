@@ -199,13 +199,13 @@ ${WRKDIR}/.extract_done:
 	done
 .endif
 	@echo -n "Extracting base and kernel ..."
-	${_v}${CAT} ${BASEFILE} | ${TAR} --unlink -xpzf - -C ${_DESTDIR}
+	rsync -a --hard-links base/. ${_DESTDIR}
 .if !defined(FREEBSD9)
 	${_v}${CAT} ${KERNELFILE} | ${TAR} --unlink -xpzf - -C ${_BOOTDIR}
 	${_v}${MV} ${_BOOTDIR}/${KERNCONF}/* ${_BOOTDIR}/kernel
 	${_v}${RMDIR} ${_BOOTDIR}/${KERNCONF}
 .else
-	${_v}${CAT} ${KERNELFILE} | ${TAR} --unlink -xpzf - -C ${_ROOTDIR}
+	rsync -a --hard-links kernel/. ${_ROOTDIR}
 .endif
 	@echo " done"
 .endif
