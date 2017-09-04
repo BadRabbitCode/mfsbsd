@@ -78,7 +78,7 @@ BOOTMODULES=acpi ahci
 MFSMODULES=aesni crypto cryptodev ext2fs geom_eli geom_mirror geom_nop ipmi \
 	ntfs nullfs opensolaris smbus snp tmpfs zfs
 #
-TAR_FLAGS="--options xz:compression-level=0"
+TAR_FLAGS=--options xz:compression-level=0
 XZ_FLAGS=-0
 #
 
