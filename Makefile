@@ -10,7 +10,6 @@ BASE?=/cdrom/usr/freebsd-dist
 KERNCONF?= GENERIC
 MFSROOT_FREE_INODES?=10%
 MFSROOT_FREE_BLOCKS?=10%
-MFSROOT_MAXSIZE?=1024m
 
 # If you want to build your own kernel and make you own world, you need to set
 # -DCUSTOM or CUSTOM=1
@@ -504,7 +503,7 @@ mfsroot: install prune config genkeys customfiles boot compress-usr packages ${W
 ${WRKDIR}/.mfsroot_done:
 	@echo -n "Creating and compressing mfsroot ..."
 	${_v}${MKDIR} ${WRKDIR}/mnt
-	${_v}${MAKEFS} -t ffs -m ${MFSROOT_MAXSIZE} -f ${MFSROOT_FREE_INODES} -b ${MFSROOT_FREE_BLOCKS} ${WRKDIR}/disk/mfsroot ${_ROOTDIR} > /dev/null
+	${_v}${MAKEFS} -t ffs -f ${MFSROOT_FREE_INODES} -b ${MFSROOT_FREE_BLOCKS} ${WRKDIR}/disk/mfsroot ${_ROOTDIR} > /dev/null
 	${_v}${RM} -rf ${WRKDIR}/mnt
 	${_v}${GZIP} -1 -f ${WRKDIR}/disk/mfsroot
 	${_v}${GZIP} -1 -f ${WRKDIR}/disk/boot/kernel/kernel
