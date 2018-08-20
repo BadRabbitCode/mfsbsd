@@ -386,7 +386,8 @@ ${WRKDIR}/.config_done:
 #	${_v}${SED} -I -E 's/\(ttyv[2-7].*\)on /\1off/g' ${_DESTDIR}/etc/ttys
 .if !defined(ROOTHACK)
 	${_v}echo "/dev/md0 / ufs rw 0 0" > ${_DESTDIR}/etc/fstab
-	${_v}echo "tmpfs /var tmpfs rw,mode=1777 0 0" >> ${_DESTDIR}/etc/fstab
+	${_v}echo "tmpfs /var/log tmpfs rw 0 0" >> ${_DESTDIR}/etc/fstab
+	${_v}echo "tmpfs /var/run tmpfs rw 0 0" >> ${_DESTDIR}/etc/fstab
 	${_v}echo "tmpfs /tmp tmpfs rw,mode=1777 0 0" >> ${_DESTDIR}/etc/fstab
 .else
 	${_v}${TOUCH} ${_DESTDIR}/etc/fstab
