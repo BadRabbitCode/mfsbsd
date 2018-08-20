@@ -10,6 +10,7 @@ BASE?=/cdrom/usr/freebsd-dist
 KERNCONF?= GENERIC
 MFSROOT_FREE_INODES?=10%
 MFSROOT_FREE_BLOCKS?=10%
+MFSROOT_MIN_SIZE=512m
 
 # If you want to build your own kernel and make you own world, you need to set
 # -DCUSTOM or CUSTOM=1
@@ -385,6 +386,7 @@ ${WRKDIR}/.config_done:
 #	${_v}${SED} -I -E 's/\(ttyv[2-7].*\)on /\1off/g' ${_DESTDIR}/etc/ttys
 .if !defined(ROOTHACK)
 	${_v}echo "/dev/md0 / ufs rw 0 0" > ${_DESTDIR}/etc/fstab
+	${_v}echo "tmpfs /var tmpfs rw,mode=1777 0 0" >> ${_DESTDIR}/etc/fstab
 	${_v}echo "tmpfs /tmp tmpfs rw,mode=1777 0 0" >> ${_DESTDIR}/etc/fstab
 .else
 	${_v}${TOUCH} ${_DESTDIR}/etc/fstab
@@ -503,7 +505,7 @@ mfsroot: install prune config genkeys customfiles boot compress-usr packages ${W
 ${WRKDIR}/.mfsroot_done:
 	@echo -n "Creating and compressing mfsroot ..."
 	${_v}${MKDIR} ${WRKDIR}/mnt
-	${_v}${MAKEFS} -t ffs -f ${MFSROOT_FREE_INODES} -b ${MFSROOT_FREE_BLOCKS} ${WRKDIR}/disk/mfsroot ${_ROOTDIR} > /dev/null
+	${_v}${MAKEFS} -t ffs -M ${MFSROOT_MIN_SIZE} -f ${MFSROOT_FREE_INODES} -b ${MFSROOT_FREE_BLOCKS} ${WRKDIR}/disk/mfsroot ${_ROOTDIR} > /dev/null
 	${_v}${RM} -rf ${WRKDIR}/mnt
 	${_v}${GZIP} -1 -f ${WRKDIR}/disk/mfsroot
 	${_v}${GZIP} -1 -f ${WRKDIR}/disk/boot/kernel/kernel
