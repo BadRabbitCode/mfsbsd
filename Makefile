@@ -387,7 +387,6 @@ ${WRKDIR}/.config_done:
 .if !defined(ROOTHACK)
 	${_v}echo "/dev/md0 / ufs rw 0 0" > ${_DESTDIR}/etc/fstab
 	${_v}echo "tmpfs /var/log tmpfs rw 0 0" >> ${_DESTDIR}/etc/fstab
-	${_v}echo "tmpfs /var/log/nginx tmpfs rw 0 0" >> ${_DESTDIR}/etc/fstab
 	${_v}echo "tmpfs /var/run tmpfs rw 0 0" >> ${_DESTDIR}/etc/fstab
 	${_v}echo "tmpfs /tmp tmpfs rw,mode=1777 0 0" >> ${_DESTDIR}/etc/fstab
 .else
